@@ -10,6 +10,7 @@ export const MapContainer = ({region}) => {
       <MapView
         provider={MapView.PROVIDER_GOOGLE}
         style={styles.map}
+        initialRegion={region}
         region={region}
       >
         <MapView.Marker

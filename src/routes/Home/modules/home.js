@@ -1,6 +1,7 @@
 import update from "react-addons-update";
 import constants from "./actionConstants";
 import { Dimensions, PermissionsAndroid } from "react-native";
+// import Geolocation from 'react-native-geolocation-service';
 
 //Constants
 const {GET_CURRENT_LOCATION} = constants;
@@ -29,6 +30,24 @@ async function requestGPSPermission() {
 //Actions
 export function getCurrentLocation () {
   return(dispatch)=>{
+    // if (requestGPSPermission()) {
+    //   Geolocation.getCurrentPosition(
+    //     (position) => {
+    //       dispatch({
+    //         type:GET_CURRENT_LOCATION,
+    //         payload:position
+    //       });
+    //       console.log(position);
+    //     },
+    //     (error) => {
+    //       // See error code charts below.
+    //       console.log(error.code, error.message);
+    //     },
+    //     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    //   );
+    // }
+
+
     if (requestGPSPermission()) {
       navigator.geolocation.getCurrentPosition(
         (position)=>{
@@ -37,7 +56,7 @@ export function getCurrentLocation () {
             payload:position
           });
         },
-        (error)=> console.log(error.message)
+        (error) => console.log(error.message), { enableHighAccuracy: false, timeout: 2000, maximumAge: 3600000 }
       );
     }
   }
@@ -45,13 +64,14 @@ export function getCurrentLocation () {
 
 // ActionHandlers
 function handleGetCurrentLocation(state, action) {
+  console.log (action.payload);
   return update(state, {
     region: {
       latitude: {
-        $set: action.payload.coords.latitude
+        $set: action.payload.coords.latitude - 2.690783
       },
       longitude: {
-        $set: action.payload.coords.longitude
+        $set: action.payload.coords.longitude - 9.797931
       },
       LATITUDE_DELTA: {
         $set: LATITUDE_DELTA

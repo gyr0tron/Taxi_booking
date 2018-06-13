@@ -22,9 +22,8 @@ export default class Home extends Component {
     console.log(this.props.region.latitude);
     return (
       <Container>
-        {this.props.region.latitude &&
-          <MapContainer region={this.props.region}/>
-        }
+        <MapContainer region={this.props.region}/>
+        
       </Container>
     );
   }
