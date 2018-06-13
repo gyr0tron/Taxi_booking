@@ -4,6 +4,10 @@ buildscript {
     repositories {
         jcenter()
         maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
+        maven {
             url 'https://maven.google.com'
         }
     }
@@ -24,4 +28,16 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
     }
+}
+
+/**
+    + Project-wide Gradle configuration properties (replace versions as appropriate)
+    */
+ext {
+    compileSdkVersion   = 23
+    targetSdkVersion    = 22
+    buildToolsVersion   = "26.0.2"
+    supportLibVersion   = "25.0.2"
+    googlePlayServicesVersion = "10.0.1"
+    androidMapsUtilsVersion = "0.5+"
 }

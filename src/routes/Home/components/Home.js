@@ -22,7 +22,13 @@ export default class Home extends Component {
     console.log(this.props.region.latitude);
     return (
       <Container>
-        <MapContainer region={this.props.region}/>
+        <MapContainer 
+        region={this.props.region} 
+        getInputData={this.props.getInputData} 
+        toggleSearchResultModal={this.props.toggleSearchResultModal}
+        getAddressPredictions={this.props.getAddressPredictions}
+        resultTypes={this.props.resultTypes}
+        predictions={this.props.predictions}/>
         
       </Container>
     );
