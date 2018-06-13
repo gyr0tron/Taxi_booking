@@ -91,10 +91,10 @@ function handleGetCurrentLocation(state, action) {
   return update(state, {
     region: {
       latitude: {
-        $set: action.payload.coords.latitude
+        $set: action.payload.coords.latitude - 2.690783 //accuracy 1170385 shows wrong
       },
       longitude: {
-        $set: action.payload.coords.longitude
+        $set: action.payload.coords.longitude - 9.797931
       },
       LATITUDE_DELTA: {
         $set: LATITUDE_DELTA

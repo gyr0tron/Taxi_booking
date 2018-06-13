@@ -4,6 +4,10 @@ import { Text, View } from 'react-native';
 import { Container } from "native-base";
 
 import MapContainer from "./MapContainer";
+import HeaderComponent from "../../../components/HeaderComponent";
+import FooterComponent from "../../../components/FooterComponent";
+
+const taxiLogo = require("../../../assets/img/taxi.png");
 
 export default class Home extends Component {
   
@@ -22,6 +26,7 @@ export default class Home extends Component {
     console.log(this.props.region.latitude);
     return (
       <Container>
+        <HeaderComponent logo={taxiLogo}/>
         <MapContainer 
         region={this.props.region} 
         getInputData={this.props.getInputData} 
@@ -29,7 +34,7 @@ export default class Home extends Component {
         getAddressPredictions={this.props.getAddressPredictions}
         resultTypes={this.props.resultTypes}
         predictions={this.props.predictions}/>
-        
+        <FooterComponent/>
       </Container>
     );
   }
