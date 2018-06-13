@@ -6,7 +6,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import styles from "./SearchBoxStyles";
 
-export const SearchBox = ({ getInputData, toggleSearchResultModal, getAddressPredictions }) => {
+export const SearchBox = ({ getInputData, toggleSearchResultModal, getAddressPredictions, selectedAddress }) => {
+  const { selectedPickUp, selectedDropOff } = selectedAddress || {};
   function handleInput(key, val) {
     getInputData({
       key,
@@ -20,7 +21,12 @@ export const SearchBox = ({ getInputData, toggleSearchResultModal, getAddressPre
         <Text style={styles.label}>PICK UP</Text>
         <InputGroup>
           <Icon name="search" size={15} color="#FF5E3A"/>
-          <Input onFocus={() => toggleSearchResultModal("pickUp")} style={styles.inputSearch} placeholder="Choose pick-up location" onChangeText={handleInput.bind(this, "pickUp")} />
+          <Input 
+            onFocus={() => toggleSearchResultModal("pickUp")} 
+            style={styles.inputSearch} 
+            placeholder="Choose pick-up location" 
+            onChangeText={handleInput.bind(this, "pickUp")} 
+            value={selectedPickUp && selectedPickUp.name}/>
         </InputGroup>
       </View>
 
@@ -28,7 +34,12 @@ export const SearchBox = ({ getInputData, toggleSearchResultModal, getAddressPre
         <Text style={styles.label}>DROP OFF</Text>
         <InputGroup>
           <Icon name="search" size={15} color="#FF5E3A" />
-          <Input onFocus={() => toggleSearchResultModal("dropOff")} style={styles.inputSearch} placeholder="Choose drop-off location" onChangeText={handleInput.bind(this, "dropOff")} />
+          <Input 
+            onFocus={() => toggleSearchResultModal("dropOff")} 
+            style={styles.inputSearch} 
+            placeholder="Choose drop-off location" 
+            onChangeText={handleInput.bind(this, "dropOff")} 
+            value={selectedDropOff && selectedDropOff.name}/>
         </InputGroup>
       </View>
     </View>

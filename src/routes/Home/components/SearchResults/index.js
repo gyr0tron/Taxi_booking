@@ -6,14 +6,17 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import styles from "./SearchResultsStyles";
 
-export const SearchResults = ({ predictions }) => {
+export const SearchResults = ({ predictions, getSelectedAddress }) => {
+  function handleSelectedAddress(placeID) {
+    getSelectedAddress(placeID)
+  }
   return (
     <View style={styles.searchResultsWrapper}>
       <List
         dataArray = {predictions}
         renderRow={(item)=>
           <View>
-            <ListItem button avatar>
+            <ListItem onPress={() => handleSelectedAddress(item.placeID)} button={true} avatar>
               <Left style={styles.leftContainer}>
                 <Icon style={styles.leftIcon} name="location-on" />
               </Left>
