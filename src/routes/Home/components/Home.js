@@ -10,11 +10,16 @@ import Fare from "./Fare";
 import Fab from "./Fab";
 
 const taxiLogo = require("../../../assets/img/taxi.png");
+const carMarker = require("../../../assets/img/carMarker.png");
 
 export default class Home extends Component {
   
   componentWillMount() {
+    var rx = this;
     this.props.getCurrentLocation();
+    setTimeout(function(){
+      rx.props.getNearByDrivers();
+    }, 1000);
 	}
 
   render() {
@@ -38,7 +43,9 @@ export default class Home extends Component {
         resultTypes={this.props.resultTypes}
         predictions={this.props.predictions}
         getSelectedAddress={this.props.getSelectedAddress}
-        selectedAddress={this.props.selectedAddress}/>
+        selectedAddress={this.props.selectedAddress}
+        carMarker={carMarker}
+        nearByDrivers={this.props.nearByDrivers}/>
 
         <Fab onPressAction={()=>this.props.bookCar()}/>
 

@@ -14,7 +14,8 @@ const {
   GET_SELECTED_ADDRESS,
   GET_DISTANCE_MATRIX,
   GET_FARE,
-  BOOK_CAR
+  BOOK_CAR,
+  GET_NEARBY_DRIVERS
 } = constants;
 
 
@@ -177,6 +178,22 @@ export function bookCar() {
   };
 }
 
+export function getNearByDrivers() {
+  return(dispatch, store)=>{
+    request.get("http://192.168.0.110:3000/api/driverLocation")
+    .query({
+      latitude: store().home.region.latitude,
+      longitude: store().home.region.longitude,
+    })
+    .finish((error, res)=>{
+      dispatch({
+        type: GET_NEARBY_DRIVERS,
+        payload: res.body
+      })
+    })
+  };
+}
+
 // ActionHandlers
 function handleGetCurrentLocation(state, action) {
   console.log (action.payload);
@@ -294,7 +311,14 @@ function handleBookCar(state, action) {
   })
 }
 
-
+//handle get GET_NEARBY_DRIVERS
+function handleGetNearByDrivers(state, action) {
+  return update(state, {
+    nearByDrivers: {
+      $set: action.payload
+    }
+  })
+}
 
 const ACTION_HANDLERS = {
   GET_CURRENT_LOCATION: handleGetCurrentLocation,  //tell redux setname action will be handled by function handlesetname
@@ -304,7 +328,8 @@ const ACTION_HANDLERS = {
   GET_SELECTED_ADDRESS: handleGetSelectedAddress,
   GET_DISTANCE_MATRIX: handleGetDistanceMatrix,
   GET_FARE: handleGetFare,
-  BOOK_CAR: handleBookCar
+  BOOK_CAR: handleBookCar,
+  GET_NEARBY_DRIVERS: handleGetNearByDrivers
 }
 
 const initialState = {
@@ -316,7 +341,31 @@ const initialState = {
   },
   inputData:{},
   resultTypes:{},
-  selectedAddress:{}
+  selectedAddress:{},
+  // nearByDrivers:[{
+  //   coordinate: {
+  //     coordinates: [
+  //       0,
+  //       0
+  //     ]
+  //   }
+  // },
+  // {
+  //   coordinate: {
+  //     coordinates: [
+  //       0,
+  //       0
+  //     ]
+  //   }
+  // },
+  // {
+  //   coordinate: {
+  //     coordinates: [
+  //       0,
+  //       0
+  //     ]
+  //   }
+  // }]
 };
 
 export function HomeReducer (state = initialState, action) {
