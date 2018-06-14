@@ -13,7 +13,8 @@ const {
   GET_ADDRESS_PREDICTIONS,
   GET_SELECTED_ADDRESS,
   GET_DISTANCE_MATRIX,
-  GET_FARE
+  GET_FARE,
+  BOOK_CAR
 } = constants;
 
 
@@ -137,10 +138,43 @@ export function getSelectedAddress(payload) {
               payload: fare
             })
           }
-        },1000)
+        },200)
       })
       .catch((error)=>console.log(error.message));
   }
+}
+
+// book car
+export function bookCar() {
+  return (dispatch, store)=>{
+    const payload = {
+      data: {
+        userName: "Simmar",
+        pickUp: {
+          address: store().home.selectedAddress.selectedPickUp.address,
+          name: store().home.selectedAddress.selectedPickUp.name,
+          latitude: store().home.selectedAddress.selectedPickUp.latitude,
+          longitude: store().home.selectedAddress.selectedPickUp.longitude
+        },
+        dropOff: {
+          address: store().home.selectedAddress.selectedDropOff.address,
+          name: store().home.selectedAddress.selectedDropOff.name,
+          latitude: store().home.selectedAddress.selectedDropOff.latitude,
+          longitude: store().home.selectedAddress.selectedDropOff.longitude
+        },
+        fare: store().home.fare,
+        status: "pending"
+      }
+    };
+    request.post("http://192.168.0.110:3000/api/bookings")
+    .send(payload)
+    .finish((error, res)=>{
+      dispatch({
+        type:BOOK_CAR,
+        payload:res.body
+      });
+    });
+  };
 }
 
 // ActionHandlers
@@ -251,6 +285,17 @@ function handleGetFare(state, action) {
   })
 }
 
+//handle book car
+function handleBookCar(state, action) {
+  return update(state, {
+    bookings: {
+      $set: action.payload
+    }
+  })
+}
+
+
+
 const ACTION_HANDLERS = {
   GET_CURRENT_LOCATION: handleGetCurrentLocation,  //tell redux setname action will be handled by function handlesetname
   GET_INPUT: handleGetInputData,
@@ -258,7 +303,8 @@ const ACTION_HANDLERS = {
   GET_ADDRESS_PREDICTIONS: handleGetAddressPredictions,
   GET_SELECTED_ADDRESS: handleGetSelectedAddress,
   GET_DISTANCE_MATRIX: handleGetDistanceMatrix,
-  GET_FARE: handleGetFare
+  GET_FARE: handleGetFare,
+  BOOK_CAR: handleBookCar
 }
 
 const initialState = {

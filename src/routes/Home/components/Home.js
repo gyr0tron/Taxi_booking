@@ -7,6 +7,7 @@ import MapContainer from "./MapContainer";
 import HeaderComponent from "../../../components/HeaderComponent";
 import FooterComponent from "../../../components/FooterComponent";
 import Fare from "./Fare";
+import Fab from "./Fab";
 
 const taxiLogo = require("../../../assets/img/taxi.png");
 
@@ -28,6 +29,7 @@ export default class Home extends Component {
     return (
       <Container>
         <HeaderComponent logo={taxiLogo}/>
+
         <MapContainer 
         region={this.props.region} 
         getInputData={this.props.getInputData} 
@@ -37,11 +39,16 @@ export default class Home extends Component {
         predictions={this.props.predictions}
         getSelectedAddress={this.props.getSelectedAddress}
         selectedAddress={this.props.selectedAddress}/>
+
+        <Fab onPressAction={()=>this.props.bookCar()}/>
+
         {
           this.props.fare &&
           <Fare fare={this.props.fare}/>
         }
+
         <FooterComponent/>
+
       </Container>
     );
   }
