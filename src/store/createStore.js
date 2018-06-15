@@ -3,6 +3,13 @@ import thunk from "redux-thunk";
 import makeRootReducer from "./reducers";
 import { createLogger } from "redux-logger";
 
+import createSocketIoMiddleware from "redux-socket.io";
+
+import io from "socket.io-client/dist/socket.io";
+let socket = io("http://192.168.0.110:3000", {jsonp:false});
+let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
+
+
 const log = createLogger({ diff: true, collapsed: true });
 
 // a function which can create our store and auto-persist the data

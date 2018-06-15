@@ -8,11 +8,13 @@ import HeaderComponent from "../../../components/HeaderComponent";
 import FooterComponent from "../../../components/FooterComponent";
 import Fare from "./Fare";
 import Fab from "./Fab";
+import FindDriver from "./FindDriver";
+
 
 const taxiLogo = require("../../../assets/img/taxi.png");
 const carMarker = require("../../../assets/img/carMarker.png");
 
-export default class Home extends Component {
+class Home extends React.Component {
   
   componentWillMount() {
     var rx = this;
@@ -29,34 +31,40 @@ export default class Home extends Component {
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421
     }
-
-    console.log(this.props.region.latitude);
+    const { status } = this.props.booking;
     return (
       <Container>
-        <HeaderComponent logo={taxiLogo}/>
+        {(status !== "pending") &&
+          <View style={{flex: 1}}>
+            <HeaderComponent logo={taxiLogo}/>
 
-        <MapContainer 
-        region={this.props.region} 
-        getInputData={this.props.getInputData} 
-        toggleSearchResultModal={this.props.toggleSearchResultModal}
-        getAddressPredictions={this.props.getAddressPredictions}
-        resultTypes={this.props.resultTypes}
-        predictions={this.props.predictions}
-        getSelectedAddress={this.props.getSelectedAddress}
-        selectedAddress={this.props.selectedAddress}
-        carMarker={carMarker}
-        nearByDrivers={this.props.nearByDrivers}/>
+            <MapContainer 
+            region={this.props.region} 
+            getInputData={this.props.getInputData} 
+            toggleSearchResultModal={this.props.toggleSearchResultModal}
+            getAddressPredictions={this.props.getAddressPredictions}
+            resultTypes={this.props.resultTypes}
+            predictions={this.props.predictions}
+            getSelectedAddress={this.props.getSelectedAddress}
+            selectedAddress={this.props.selectedAddress}
+            carMarker={carMarker}
+            nearByDrivers={this.props.nearByDrivers}/>
 
-        <Fab onPressAction={()=>this.props.bookCar()}/>
+            <Fab onPressAction={()=>this.props.bookCar()}/>
 
-        {
-          this.props.fare &&
-          <Fare fare={this.props.fare}/>
+            {
+              this.props.fare &&
+              <Fare fare={this.props.fare}/>
+            }
+
+            <FooterComponent/>
+          </View>
+          ||
+          <FindDriver selectedAddress={this.props.selectedAddress}/>
         }
-
-        <FooterComponent/>
-
       </Container>
     );
   }
 }
+
+export default Home;

@@ -147,7 +147,9 @@ export function getSelectedAddress(payload) {
 
 // book car
 export function bookCar() {
-  return (dispatch, store)=>{
+  return (dispatch, store) => {
+    const nearByDrivers = store().home.nearByDrivers;
+    const nearByDriver = nearByDrivers[Math.floor(Math.random() * nearByDrivers.length)];
     const payload = {
       data: {
         userName: "Simmar",
@@ -165,9 +167,15 @@ export function bookCar() {
         },
         fare: store().home.fare,
         status: "pending"
+      },
+      nearByDriver: {
+        socketId: nearByDriver.socketId,
+        driverId: nearByDriver.driverId,
+        latitude: nearByDriver.coordinate.coordinates[1],
+        longitude: nearByDriver.coordinate.coordinates[0]
       }
     };
-    request.post("http://192.168.0.110:3000/api/bookings")
+    request.post("http://192.168.0.110:3000/api/bookings/")
     .send(payload)
     .finish((error, res)=>{
       dispatch({
@@ -305,7 +313,7 @@ function handleGetFare(state, action) {
 //handle book car
 function handleBookCar(state, action) {
   return update(state, {
-    bookings: {
+    booking: {
       $set: action.payload
     }
   })
