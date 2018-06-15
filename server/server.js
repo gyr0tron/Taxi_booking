@@ -5,8 +5,8 @@ require('dotenv').config();
 
 var index = require("./routes/index");
 var bookings = require("./routes/bookings");
-var driverLocationSocket = require("./routes/driverLocation");
 var driverLocation = require("./routes/driverLocation");
+var drivers = require("./routes/drivers");
 
 var app = express();
 var port = 3000;
@@ -27,8 +27,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Routes
 app.use("/", index);
 app.use("/api", bookings);
-app.use("/api", driverLocationSocket);
 app.use("/api", driverLocation);
+app.use("/api", drivers);
 
 io.listen(
   app.listen(port, function () {

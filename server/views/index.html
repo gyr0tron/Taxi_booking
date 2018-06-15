@@ -57,7 +57,95 @@
         socket.on(driverRequest, function (passengerData) {
           if (passengerData) {
             console.log("Passenger looking for a driver", passengerData);
+
+             //Update booking status to confirmed on btn click
+            $(".btn").click(function (e) {
+              //e.preventDefault();
+
+              var status = $("#bookingStatus").val();
+              var dataToSend = {
+                "driverId": "593a65fc734d1d141ca6557d",
+                "id": passengerData._id,
+                "status": status,
+              };
+              $.ajax({
+                type: "PUT",
+                url: "/api/bookings/" + passengerData._id,
+                dataType: "json",
+                data: dataToSend
+              }).done(function (response) {
+                // Check for a successful (blank) response
+                if (response !== "") {
+                  console.log("Success");
+                }
+                else {
+                  console.log("Error: " + response);
+                }
+              });
+            });
           }
+        });
+
+        socket.on("trackDriver", function (location) {
+          var driverMovement = [{
+            lat: 19.211388,
+            long: 72.980173
+          },
+          {
+            lat: 19.212927,
+            long: 72.977362
+          },
+          {
+            lat: 19.218221,
+            long: 72.978079
+          },
+          {
+            lat: 19.220916,
+            long: 72.978980
+          },
+          {
+            lat: 19.223778,
+            long: 72.979119
+          },
+          {
+            lat: 19.225776,
+            long: 72.979835
+          },
+          {
+            lat: 9.227392,
+            long: 72.980861
+          },
+          {
+            lat: 19.228342,
+            long: 72.982320
+          }];
+          var index = 0;
+          var interval = setInterval(function () {
+            var movementObj = driverMovement[index++];
+            if (index == driverMovement.length) {
+              clearInterval(interval);
+              console.log(index)
+            }
+            var driverCurrentLocation = {
+              "locationId": location._id,
+              "latitude": movementObj.lat,
+              "longitude": movementObj.long
+            };
+            $.ajax({
+              type: "PUT",
+              url: "/api/driverLocation/" + location._id,
+              dataType: "json",
+              data: driverCurrentLocation
+            }).done(function (response) {
+              // Check for a successful (blank) response
+              if (response !== "") {
+                console.log("Driver Location updated ");
+              }
+              else {
+                console.log("Error: " + response);
+              }
+            });
+          }, 5000);
         });
       });
     </script>
